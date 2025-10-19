@@ -3,34 +3,78 @@
    ============================== */
 :root {
   --main-color: #4275f5;
+  --main-complement:#f5c242;
+  --main-plus3: #4275f5;
+
   --background-color: white;
   --text-color:black;
   --text-complement:white;
+  --color-base-00: #ffffff;
+  --color-base-05: #fcfcfc;
+  --color-base-10: #fafafa;
+  --color-base-20: #f6f6f6;
+  --color-base-25: #e3e3e3;
+  --color-base-30: #e0e0e0;
+  --color-base-35: #d4d4d4;
+  --color-base-40: #bdbdbd;
+  --color-base-50: #ababab;
+  --color-base-60: #707070;
+  --color-base-70: #5a5a5a;
+  --color-base-100: #222222;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --main-color: #f5c242; /* dark mode */
+    --main-color: #f5c242;
+    --main-complement: #4275f5;
+    --main-plus3:#efaf0d;
+
     --background-color: #282828;
     --text-color:white;
     --text-complement:black;
+
+    --color-base-00: #1e1e1e;
+    --color-base-05: #212121;
+    --color-base-10: #242424;
+    --color-base-20: #262626;
+    --color-base-25: #2a2a2a;
+    --color-base-30: #363636;
+    --color-base-35: #3f3f3f;
+    --color-base-40: #555555;
+    --color-base-50: #666666;
+    --color-base-60: #999999;
+    --color-base-70: #bababa;
+    --color-base-100: #dadada;
   }
 }
 
 body{
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background-color: var(--background-color);
+    background-color: var(--color-base-00);
     color: var(--text-color);
+    margin: 0px;
 }
 .header{
+    background-color: var(--color-base-30);
+    padding: 1%;
     display: grid;
-    padding-top: 1%;
-    border-bottom: 2px solid var(--text-color);
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 50px;
 }
+.link-header{
+    background-color: var(--color-base-20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.2rem solid var(--color-base-30); 
+    border-radius: 25px;
+}
+.link-header:hover{
+    background-color: var(--color-base-00);
+}
 .nome-in-alto{
     justify-self: center;
+    align-self: center;
     font-weight: bold;
 }
 .container {
@@ -66,7 +110,7 @@ a{
 }
 a:hover {
   text-decoration: underline;
-  color: #0d4def;
+  color: var(--main-plus3);
 }
 a.websites-button{
       display: inline-flex;        /* makes icon and text line up horizontally */
@@ -80,7 +124,7 @@ a.websites-button{
       margin: 5px;     
 }
 a.websites-button:hover{
-    background-color: #0d4def;  /* sono 3 toni in più su https://www.colorhexa.com/4275f5 */
+    background-color: var(--main-plus3);  /* sono 3 toni in più su https://www.colorhexa.com/4275f5 */
 }
 a.websites-button svg {
     width: 20px;
