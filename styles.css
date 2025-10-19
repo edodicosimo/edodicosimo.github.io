@@ -14,6 +14,7 @@ body{
   grid-template-rows: 210px 50px;
 }
 .profile-img {
+    padding: 5%;
     width: 200px;
     height: 200px;
     border-radius: 50%;
@@ -29,7 +30,21 @@ body{
     grid-template-rows: 5fr 1fr;
 }
 .websites{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    display: flex;
+}
+a.websites-button{
+      display: inline-flex;        /* makes icon and text line up horizontally */
+      align-items: center;         /* vertically centers them */
+      gap: 8px;                    /* space between icon and text */
+      background-color: #4275f5;   /* button color (you can change it) */
+      color: white;                /* text color */
+      padding: 10px 20px;          /* space inside button */
+      border-radius: 25px;         /* makes the button rounded */
+      text-decoration: none;  
+      margin: 5px;     
+}
+a.websites-button svg {
+    width: 20px;
+    height: 20px;         
+    color: white;     /* makes the icon white */
 }
