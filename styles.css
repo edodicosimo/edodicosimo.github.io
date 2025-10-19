@@ -5,7 +5,7 @@ body{
     display: grid;
     padding-top: 1%;
     border-bottom: 2px solid black;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 50px;
 }
 .container {
@@ -13,7 +13,13 @@ body{
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 210px 50px;
 }
+.pic-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .profile-img {
+    flex: 0 0 auto;
     padding: 5%;
     width: 200px;
     height: 200px;
@@ -31,6 +37,15 @@ body{
 }
 .websites{
     display: flex;
+    justify-content: center;
+}
+a{
+    text-decoration: none;
+    color: #4275f5;
+}
+a:hover {
+  text-decoration: underline;
+  color: #0d4def;
 }
 a.websites-button{
       display: inline-flex;        /* makes icon and text line up horizontally */
@@ -42,6 +57,9 @@ a.websites-button{
       border-radius: 25px;         /* makes the button rounded */
       text-decoration: none;  
       margin: 5px;     
+}
+a.websites-button:hover{
+    background-color: #0d4def;  /* sono 3 toni in più su https://www.colorhexa.com/4275f5 */
 }
 a.websites-button svg {
     width: 20px;
