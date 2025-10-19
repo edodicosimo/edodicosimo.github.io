@@ -1,10 +1,31 @@
+/* ==============================
+   THEME COLOR VARIABLES
+   ============================== */
+:root {
+  --main-color: #4275f5;
+  --background-color: white;
+  --text-color:black;
+  --text-complement:white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-color: #f5c242; /* dark mode */
+    --background-color: #282828;
+    --text-color:white;
+    --text-complement:black;
+  }
+}
+
 body{
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 .header{
     display: grid;
     padding-top: 1%;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--text-color);
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 50px;
 }
@@ -41,7 +62,7 @@ body{
 }
 a{
     text-decoration: none;
-    color: #4275f5;
+    color: var(--main-color);
 }
 a:hover {
   text-decoration: underline;
@@ -51,8 +72,8 @@ a.websites-button{
       display: inline-flex;        /* makes icon and text line up horizontally */
       align-items: center;         /* vertically centers them */
       gap: 8px;                    /* space between icon and text */
-      background-color: #4275f5;   /* button color (you can change it) */
-      color: white;                /* text color */
+      background-color: var(--main-color);   /* button color (you can change it) */
+      color: var(--text-complement);                /* text color */
       padding: 10px 20px;          /* space inside button */
       border-radius: 25px;         /* makes the button rounded */
       text-decoration: none;  
@@ -64,5 +85,5 @@ a.websites-button:hover{
 a.websites-button svg {
     width: 20px;
     height: 20px;         
-    color: white;     /* makes the icon white */
+    color: var(--text-complement);     /* makes the icon white */
 }
