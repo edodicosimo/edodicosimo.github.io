@@ -8,6 +8,10 @@ body{
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 50px;
 }
+.nome-in-alto{
+    justify-self: center;
+    font-weight: bold;
+}
 .container {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -25,10 +29,6 @@ body{
     height: 200px;
     border-radius: 50%;
     object-fit: cover; /* makes it look nice inside the circle */
-}
-.nome-in-alto{
-    justify-self: center;
-    font-weight: bold;
 }
 .colonna-laterale{
     display: grid;

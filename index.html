@@ -3,22 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edoardo Di Cosimo</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+<nav class="header">
+  <div class="nome-in-alto"> Edoardo Di Cosimo</div>
+  <a href="#" onclick="showSection('about')" style="grid-column-start: 3;">About</a>
+  <a href="#" onclick="showSection('posts')">Posts</a>
+  <a href="#" onclick="showSection('projects')">Projects</a>
+</nav>
 <body>
-    <div class="header">
-        <div class="nome-in-alto"> Edoardo Di Cosimo</div>
-        <div style="grid-column-start: 3;">
-            <a href="./index.html">About</a> 
-        </div>
-        <div>
-            <a href="./posts.html">Posts</a>
-        </div>
-        <div>
-            <a href="./projects.html">Projects</a>
-        </div>
     </div>
     <div class="container">
         <div class="colonna-laterale">
@@ -46,16 +41,29 @@
                 </div> 
             </div>
         </div>
-        <div>
-            <h1>
-                Edoardo Di Cosimo
-            </h1>
-            MS Economics and Finance. I'm a Economics and Finance student at Sapienza University of Rome. 
+        <div class="main-section">
+
+        <section id="about">
+            <h1>Edoardo Di Cosimo</h1>
+            <p>MS Economics and Finance. I'm an Economics and Finance student at Sapienza University of Rome.</p>
+        </section>
+
+        <section id="posts" style="display: none;">
+            <h1>Posts</h1>
+            <p></p>
+        </section>
+
+        <section id="projects" style="display: none;">
+            <h1>Projects</h1>
+            <p></p>
+        </section> 
         </div>
-        <div class="cerchio-rosso"></div>
+
     </div>
+
     <script>
         lucide.createIcons();
     </script>
+    <script src="script.js"></script>
 </body>
 </html>
