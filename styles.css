@@ -14,14 +14,13 @@ body{
   grid-template-rows: 210px 50px;
 }
 .profile-img {
-    padding: 10%;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover; /* makes it look nice inside the circle */
 }
 .nome-in-alto{
-    text-align: center;
+    justify-self: center;
     font-weight: bold;
 }
 .colonna-laterale{
