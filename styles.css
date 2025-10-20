@@ -54,6 +54,9 @@ body{
     color: var(--text-color);
     margin: 0px;
 }
+h1{
+    font-size: x-large;
+}
 .header{
     background-color: var(--color-base-30);
     padding: 1%;
@@ -76,7 +79,7 @@ body{
     justify-self: center;
     align-self: center;
     font-weight: bold;
-    font-size: x-large;
+    font-size: xx-large;
 }
 .container {
   display: grid;
@@ -95,6 +98,10 @@ body{
     height: 200px;
     border-radius: 50%;
     object-fit: cover; /* makes it look nice inside the circle */
+}
+.profile-img:hover{
+    width: 300px;
+    height: 300px;
 }
 .colonna-laterale{
     display: grid;

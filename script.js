@@ -5,10 +5,3 @@ function showSection(sectionId) {
 
   document.getElementById(sectionId).style.display = 'block';
 }
-    function loadMarkdown(file) {
-      fetch(file)
-        .then(response => response.text())
-        .then(text => {
-          document.getElementById('content').innerHTML = marked.parse(text);
-        });
-    }
