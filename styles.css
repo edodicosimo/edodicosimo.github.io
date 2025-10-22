@@ -4,7 +4,7 @@
 :root {
   --main-color: #4275f5;
   --main-complement:#f5c242;
-  --main-plus3: #4275f5;
+  --main-plus3: #0d4def;
 
   --background-color: white;
   --text-color:black;
@@ -87,17 +87,20 @@ h1{
   grid-template-rows: 210px 50px;
 }
 .pic-container{
+    padding: 2%;;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .profile-img {
     flex: 0 0 auto;
-    padding: 5%;
+    padding-top: 2%;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover; /* makes it look nice inside the circle */
+    border: solid var(--main-color) 2px;
+    background-color: var(--main-color);
 }
 .profile-img:hover{
     width: 300px;
