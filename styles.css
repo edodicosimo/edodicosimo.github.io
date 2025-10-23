@@ -27,7 +27,7 @@
   :root {
     --main-color: #f5c242;
     --main-complement: #4275f5;
-    --main-plus3:#efaf0d;
+    --main-plus3:#f8d47a; /* SO MINUS 3 PERCHè è DARK MODE*/
 
     --background-color: #282828;
     --text-color:white;
@@ -84,9 +84,19 @@ h1{
     font-size: xx-large;
 }
 .container {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: 210px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  /* grid-template-columns: 1fr 3fr;
+  grid-template-rows: 210px 50px; */
+}
+.colonna-laterale{
+    flex:1 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5fr 1fr;
+}
+.main-section{
+    flex:3 1 400px;
 }
 .container-of-pic-container{
     display: flex;
@@ -119,11 +129,7 @@ h1{
 .profile-img:hover{
     transform: scale(1.2);
 }
-.colonna-laterale{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 5fr 1fr;
-}
+
 .websites{
     display: flex;
     justify-content: center;
