@@ -1,0 +1,244 @@
+---
+title: "Cluster Robust Variance Estimator"
+author: "Edoardo Di Cosimo"
+format:
+  html:
+    toc: true
+jupyter: python3
+---
+# Cluster Robust Variance Estimator
+
+## Notation
+We use the same notation as in [@cameron2015cluster]:
+$$
+\mathbf{X_{ig}}=
+\begin{bmatrix}
+x_{1ig}, &  x_{2ig}, &  \dots  & x_{kig} 
+\end{bmatrix}
+$$
+
+$$
+\mathbf{X_{g}}= \begin{bmatrix}
+\mathbf{X_{ig}} \\
+\mathbf{X_{jg}} \\  
+\dots  \\
+\mathbf{X_{N_{g}g}}
+\end{bmatrix} = 
+\begin{bmatrix}
+x_{1ig}, &  x_{2ig}, &  \dots  & x_{kig}  \\
+x_{1ij}, &  x_{2jg}, &  \dots  & x_{kjg}  \\
+\dots \\
+x_{1N_{g}g}, &  x_{2N_{g}g}, &  \dots  & x_{kN_{g}g} 
+\end{bmatrix}
+$$
+$$
+\mathbf{X} =
+\begin{bmatrix}
+\mathbf{X_{ig}} \\
+\mathbf{X_{jg}} \\
+\dots \\
+\mathbf{X_{N_{g}g}} \\
+\\
+\mathbf{X_{ih}} \\
+\mathbf{X_{jh}} \\
+\dots \\
+\mathbf{X_{N_{h}h}} \\
+\\
+\dots \\
+\\
+\mathbf{X_{iG}} \\
+\mathbf{X_{jG}} \\
+\dots \\
+\mathbf{X_{N_{G}G}}
+\end{bmatrix}
+
+$$
+
+
+
+The idea behind CRVE is that clusters are independent one from the other. Since inference requires independence across a big number of units, we base it on the number of clusters rather than the number of individuals. Assuming that $\mathbb{E}\left[ \mathbf{X'_{g}u_{g}} \right]=0$, $\hat{\beta}_\text{ols}$ will be a consistent estimator of the population parameter $\beta$ if $G \to \infty$ [@woolridge2010]. To understand this note that computing $\beta$:
+$$
+\left( X'X \right)^{-1}\left( X'y \right) 
+$$
+is the same as doing: 
+$$
+\hat{\boldsymbol{\beta}}_\text{ols} = \left( \sum_{g}^{G}\mathbf{X_{g}}'\mathbf{X_{g}}  \right)^{-1}\left( \sum_{g}^{G}\mathbf{X_{g}'y_{g}} \right) 
+$$
+so 
+$$
+\left( \hat{\boldsymbol{\beta}}_\text{ols} -\boldsymbol{\beta} \right) = \left(  \frac{1}{G}\sum_{g}^{G}\mathbf{X_{g}}'\mathbf{X_{g}}  \right)^{-1}\left( \frac{1}{G}\sum_{g}^{G}\mathbf{X_{g}'u_{g}} \right)
+$$
+and applying the Weak Law of Large Numbers [@woolridge2003]
+$$
+\frac{1}{G}\sum_{g}^{G}\mathbf{X_{g}'u_{g}} \xrightarrow{p} \mathbb{E}\left[ \mathbf{X'_{g}u_{g}} \right]=0
+$$
+so $\hat{\boldsymbol{\beta}}_\text{ols}$ will be consistent.
+Now let us derive it's asymptotic distribution:
+$$
+\sqrt{ G } \left( \hat{\boldsymbol{\beta}}_\text{ols} -\boldsymbol{\beta} \right) = \left(  \frac{1}{G}\sum_{g}^{G}\mathbf{X_{g}}'\mathbf{X_{g}}  \right)^{-1}\left( \frac{1}{\sqrt{ G }}\sum_{g}^{G}\mathbf{X_{g}'u_{g}} \right)
+$$
+The first term is by assumption $A^{-1} + o_{p}(1)$, while the second is $\overset{a}{\sim} \mathcal{N}\left( 0, \mathbb{E}[\mathbf{X_{g}'u_{g}u_{g}'X_{g}}] \right)$
+So 
+$$
+\sqrt{ G } \left( \hat{\boldsymbol{\beta}}_\text{ols} -\boldsymbol{\beta} \right) \xrightarrow{d} \mathcal{N} \left( 0, A^{-1}\mathbb{E}[\mathbf{X_{g}'u_{g}u_{g}'X_{g}}]A^{-1} \right) 
+$$
+
+### Formula
+
+$$
+\hat{V}_\text{clu} \hat{\mathbf{\beta}} = \left( \mathbf{X'X} \right)^{-1} \mathbf{B} \left(  \mathbf{X'X} \right)^{-1} = \left( \mathbf{X'X} \right)^{-1} \left(  \sum_{g=1}^{G}\mathbf{X}_{g}'\hat{\mathbf{u}}_{g}\hat{\mathbf{u}}_{g}'\mathbf{X}_{g }  \right) \left(  \mathbf{X'X} \right)^{-1}
+$$
+Assuming that we have our data stored in a pandas DataFrame (called `df`), we first compute $(\mathbf{X'X})^{-1}$ and initialize the inner matrix $\mathbf{B}$ to a matrix full of zeroes with the same dimensions as $\left( \mathbf{X'X} \right)^{-1}$ .
+```{python}
+#| eval: false
+X = df.filter(like='X').to_numpy()
+XX_inv = np.linalg.inv(X.T @ X)
+B_hat_sum = np.zeros_like(XX_inv)
+```
+The estimated version of $\mathbf{B}$ would of course be:
+$$
+\mathbf{X_{g}'\hat{u}_{g}\hat{u}_{g}'X_{g}}
+$$
+Define:
+$$
+\mathbf{s_g}\equiv\mathbf{X_{g}}' \mathbf{\hat u_{g}} =
+\begin{bmatrix}
+X_{1 1 g} & X_{1 2 g} & \cdots & X_{1 N_g g} \\
+X_{2 1 g} & X_{2 2 g} & \cdots & X_{2 N_g g} \\
+\vdots    & \vdots    & \ddots & \vdots      \\
+X_{k 1 g} & X_{k 2 g} & \cdots & X_{k N_g g}
+\end{bmatrix}
+\begin{bmatrix}
+\hat u_{1 g} \\
+\hat u_{2 g} \\
+\vdots       \\
+\hat u_{N_g g}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\displaystyle \sum_{i=1}^{N_g} X_{1 i g}\, \hat u_{i g} \\
+\displaystyle \sum_{i=1}^{N_g} X_{2 i g}\, \hat u_{i g} \\
+\vdots \\
+\displaystyle \sum_{i=1}^{N_g} X_{k i g}\, \hat u_{i g}
+\end{bmatrix}
+$$
+
+Then:
+
+$$
+\mathbf{s_g s_g}' 
+= (X_g' {u}_g)(X_g' {u}_g)' 
+= X_g' {u}_g {u}_g' X_g
+$$
+
+$$
+s_g s_g' =
+\begin{bmatrix}
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{1 i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{1 i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{1 i g} X_{k j g} \hat u_{i g} \hat u_{j g} \\[6pt]
+
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{2 i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{2 i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{2 i g} X_{k j g} \hat u_{i g} \hat u_{j g} \\
+
+\vdots & \vdots & \ddots & \vdots \\[6pt]
+
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{k i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{k i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\displaystyle \sum_{i \in g} \sum_{j \in g} X_{k i g} X_{k j g} \hat u_{i g} \hat u_{j g}
+\end{bmatrix}
+$$
+
+We can do this by looping through all clusters:
+```{python} 
+#| eval: false
+for _, df_g in df.groupby(cluster_col):
+	#df.groupby(col) yields pairs (group_name, group_dataframe)
+	#so df_g is a dataframe with only the observation from a certain cluster
+	X_g = df_g.filter(like='X').to_numpy()
+	u_g = df_g['uhat'].to_numpy().reshape(-1, 1)
+	B_hat_g = X_g.T @ (u_g @ u_g.T) @ X_g
+```
+
+Then we sum this over all G clusters:
+$$
+\mathbf{\hat{B}}
+=
+\sum_{g=1}^{G} \mathbf{X}_{g}' \hat{\mathbf{u}}_{g}\hat{\mathbf{u}}_{g}' \mathbf{X}_{g}
+=
+\begin{bmatrix}
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{1 i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{1 i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{1 i g} X_{k j g} \hat u_{i g} \hat u_{j g} \\[6pt]
+
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{2 i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{2 i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{2 i g} X_{k j g} \hat u_{i g} \hat u_{j g} \\
+
+\vdots & \vdots & \ddots & \vdots \\[6pt]
+
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{k i g} X_{1 j g} \hat u_{i g} \hat u_{j g} &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{k i g} X_{2 j g} \hat u_{i g} \hat u_{j g} &
+\cdots &
+\sum_{g=1}^{G}\sum_{i \in g}\sum_{j \in g} X_{k i g} X_{k j g} \hat u_{i g} \hat u_{j g}
+\end{bmatrix}
+$$
+
+
+
+```{python}
+#| eval: false
+# matrices is a list with all the G s_gs_g matrices
+# stack them into a 3-D array
+stacked = np.stack(matrices, axis=0)
+
+# sum along the first axis
+B = np.sum(stacked, axis=0)
+```
+
+So what CRVE does is to compute for each cluster the outer product of $\mathbf{\hat{S}_{g}} = \mathbf{X_{g}'\hat{u}_{g}}$ with itself, and then average those matrices across clusters.    
+After pre and post-multiplication by $\bigl(\frac{1}{N}\sum_i \mathbf{x}_i\mathbf{x}_i^\prime\bigr)^{-1}$, this converges to the **asymptotic variance-covariance matrix** of the OLS estimator $\hat{\boldsymbol{\beta}}_\text{ols}$.
+
+---
+## Convergence
+We want to show that
+$$
+\frac{1}{G}\sum_{g}
+\mathbf{X}_g^{\prime}\,\hat{\mathbf{u}}_g \hat{\mathbf{u}}_g^{\prime}\mathbf{X}_g
+\;\overset{p}{\longrightarrow}\;
+\mathbb{E}\!\left[ \mathbf{X}_g^{\prime}\mathbf{u}_g \mathbf{u}_g^{\prime}\mathbf{X}_g \right]
+$$
+First let's substitute for $\mathbf{\hat{u}_{g}}$:
+
+$$
+\frac{1}{G}\sum_{g}
+\mathbf{X}_g^{\prime}\bigl(\mathbf{y}_g-\mathbf{X}_g\hat{\boldsymbol{\beta}}\bigr)
+\bigl(\mathbf{y}_g-\mathbf{X}_g\hat{\boldsymbol{\beta}} \bigr)^{\prime}\mathbf{X}_g
+$$
+
+$$
+\frac{1}{G}\sum_{g}
+\mathbf{X}_g^{\prime}\bigl(\mathbf{X}_g\boldsymbol{\beta}+\mathbf{u}_g-\mathbf{X}_g\hat{\boldsymbol{\beta}}_g \bigr)
+\bigl(\mathbf{X}_g\boldsymbol{\beta}+\mathbf{u}_g-\mathbf{X}_g\hat{\boldsymbol{\beta}}_g \bigr)^{\prime}\mathbf{X}_g
+$$
+We then factor terms in order to isolate $(\beta - \hat{\beta})$
+
+$$
+\frac{1}{G}\sum_{g}
+\mathbf{X}_g^{\prime}\Bigl[\mathbf{X}_g\bigl(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}}_g \bigr)+\mathbf{u}_g \Bigr]
+\Bigl[\mathbf{X}_g\bigl(\boldsymbol{\beta}-\hat{\boldsymbol{\beta}}_g \bigr)+\mathbf{u}_g \Bigr]^{\prime}\mathbf{X}_g
+$$
+As $\hat{\beta} \overset{p}{\to} \beta$, the extra terms vanish, leaving only $\mathbf{u}_g$.
+$$
+\xrightarrow{p}
+\frac{1}{G}\sum_{g}
+\mathbf{X}_g^{\prime}\mathbf{u}_g \mathbf{u}_g^{\prime}\mathbf{X}_g
+\;\overset{p}{\longrightarrow}\;
+\mathbb{E}\!\left[ \mathbf{X}_g^{\prime}\mathbf{u}_g \mathbf{u}_g^{\prime}\mathbf{X}_g \right]
+$$
