@@ -11,6 +11,7 @@ links.forEach(link => {
   });
 });
 
+
 function showSection(sectionId) {
   sections.forEach(section => {
     section.style.display = (section.id === sectionId) ? 'block' : 'none';
@@ -27,6 +28,30 @@ function highlightCurrentSection(sectionId) {
     }
   });
 }
+document.querySelectorAll('.post a').forEach(link => {
+    link.addEventListener('click', event => {
+        event.preventDefault();
+        const url = link.getAttribute('href');
+
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const bodyContent = doc.body.innerHTML;
+
+                const postsSection = document.getElementById('posts');
+                postsSection.innerHTML = bodyContent;
+                if (window.MathJax && window.MathJax.typesetPromise) {
+  MathJax.typesetPromise([postsSection]);
+}
+            })
+            .catch(error => {
+                console.error('Error loading post:', error);
+            });
+    });
+});
+
 
 showSection('about');
 highlightCurrentSection('about');

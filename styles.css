@@ -95,7 +95,7 @@ h1{
     flex:1 1;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 5fr 1fr;
+    grid-template-rows: 250px 50px;
 }
 .main-section{
     flex:3 1 400px;
@@ -135,6 +135,8 @@ h1{
 .websites{
     display: flex;
     justify-content: center;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 a{
     text-decoration: none;

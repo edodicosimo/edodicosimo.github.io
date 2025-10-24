@@ -10,6 +10,18 @@
     <meta property="og:type" content="website" />
     <title>Edoardo Di Cosimo</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <nav class="header">
@@ -53,17 +65,19 @@
             <section id="about">
                 <h1>Edoardo Di Cosimo</h1>
                 <p>MS Economics and Finance. I'm an Economics and Finance student at Sapienza University of Rome.</p>
+                
             </section>
 
-            <section id="posts" style="display: none;">
+            <section id="posts" >
                 <h1>Posts</h1>
                 <ul>
-                    <li><a href="./_posts/first_post.html">Primopost di prova</a></li>
+                    <li class="post"><a href="./_posts/first_post.html">Primopost di prova</a></li>
+                    <li class="post"><a href="./articles/CRVE.html">Cluster Robust Variance Estimator</a></li>
                 </ul>
                 <article id="post-content"></article>
             </section>
 
-            <section id="projects" style="display: none;">
+            <section id="projects">
                 <h1>Projects</h1>
                 <p></p>
             </section> 
